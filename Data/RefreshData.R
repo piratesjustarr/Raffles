@@ -13,6 +13,7 @@ loadLibraries<-function()
   require(quantmod)
   require(quantstrat)
   require(readr)
+  require(chron)
 }
 
 #Returns list of known AIM tickers from AimIndex.csv
@@ -80,6 +81,20 @@ RefreshData<-function()
 
 
 #Reload all AIM data and tell Slack
-slackrBot("Refreshing all Aim data:")
+setwd("/home/raffles/Raffles/Data")
 loadLibraries()
-slackrBot(RefreshData())
+slackr_setup()
+slackrBot("Refreshing all Aim data:")
+message<-"Something terrible has occurred!"
+
+if(is.weekend(Sys.Date())==TRUE)
+{
+  message<-"Nope - it's the weekend."  
+}
+
+if(is.weekend(Sys.Date())==FALSE)
+{
+  timeTaken=system.time(RefreshData())
+  message<-paste("Got updates for",length(ls(LoadedSymbols)),"symbols in ",timeTaken)
+}
+slackrBot(message)
