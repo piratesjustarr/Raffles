@@ -65,12 +65,27 @@ res<-(t(as.data.frame(shift)))
 res<-res[order(res,decreasing = TRUE),]
 picks<-gsub(names(res),pattern = "\\.",replacement = ":")
 write.csv(picks,"picks.csv")
+picks<-head(picks,50)
+
+dayreturns<-list()
+for(pick in picks)
+{
+  recent<<-last(LoadedSymbols[[pick]],"15 days")
+  recent_cl<-(Cl(recent))
+  return<-as.numeric(recent_cl[10])/as.numeric(recent_cl[1])*100
+  print(pick)
+  print(return)
+  dayreturns[[pick]]<-return
+}
+picks<-t(as.data.frame(dayreturns[order(t(as.data.frame(dayreturns)),decreasing = TRUE)]))
 picks<-head(picks,5)
 
-
 slackr_setup()
-slackrBot("Making daily picks from highest median gain in previous 30 days:")
-slackrBot(print(head(res)))
+slackrBot("Making daily picks from highest median gain in previous 30 days, top 50 sorted by return in last 15 days:")
+slackrBot(print(picks))
+
+#Get names not returns
+picks<-rownames(picks)
 
 messageLinks=""
 for(pick in picks)
@@ -82,6 +97,7 @@ messageLinks<-gsub(messageLinks,pattern = "LON",replacement = "LSE")
 slackrMsg(txt=messageLinks)
 
 #Blart Everything to Slack
+picks<-gsub(picks,pattern = "\\.",replacement = ":")
 for(i in 1:5)
 {
 jpeg("Plot.jpeg")
