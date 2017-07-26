@@ -41,11 +41,8 @@ for (symbol in ls(LoadedSymbols))
   #Only use data we have access to.
   data<-data[paste("::",theDate,sep="")]
   
-  #which is recent
-  recentdata=index(last(data))>=as.Date(Sys.time())-2
-  
-  #If we have enough recent data
-  if(nrow(data)>delta && recentdata)
+  #If we have enough data
+  if(nrow(data)>delta)
   {
     #Get ROC vs delta periods ago
     #val=median(ROC(data,n = delta),na.rm = TRUE)
@@ -89,8 +86,3 @@ barChart(LoadedSymbols[[picks[i]]],name=picks[i],TA='addRSI();addVo()')
 dev.off()
 slackrUpload(filename = "Plot.jpeg", title = picks[i], channels = "raffles")
 }
-
-
-slackrUpload(filename = "picks.csv", title = "all 
-picks", channels = "raffles")
-
