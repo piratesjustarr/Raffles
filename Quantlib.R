@@ -8,10 +8,11 @@ installQuantPackages<-function()
   install.packages("ggplot2")
   require(devtools)
   install_github("braverock/FinancialInstrument")
-  install_github("joshuaulrich/xts")
   install_github("braverock/blotter")
   install_github("braverock/quantstrat")
   install_github("braverock/PerformanceAnalytics")
+  install_github("joshuaulrich/xts")
+  install_github("joshuaulrich/quantmod")
 }
 
 #Loads basic libraries and sets up required environments for Quantstrat
