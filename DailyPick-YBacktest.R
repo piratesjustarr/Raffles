@@ -67,6 +67,9 @@ picks<-gsub(names(res),pattern = "LON\\.",replacement = "")
 picks<-head(picks,50)
 picks<-paste(picks,".L",sep="")
 
+LoadedSymbols2<-new.env()
+getSymbols(picks,env=LoadedSymbols2,from="2017-01-01")
+
 #Sum of return over last 10 days
 dayreturns<-list()
 for(pick in picks)

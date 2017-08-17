@@ -42,7 +42,7 @@ getRemoteDataG<-function(startDate)
   #Make new environment and kick it up to parent
   LoadedSymbols<<-new.env()
   #Load data from Google
-  getSymbols(as.character(LonSymbols), src='google', index.class=c("POSIXt","POSIXct"), env=LoadedSymbols, from=startDate)
+  getSymbols(as.character(LonSymbols), src='google', index.class=c("POSIXt","POSIXct"), env=LoadedSymbols)#, from=startDate)
 }
 
 #Hassle Yahoo for the OHLCV data for the symbols
@@ -80,6 +80,15 @@ RefreshData<-function()
   print("DONE.")
 }
 
+checkTickers<-function(SomeSymbols)
+{
+  for (symbol in SomeSymbols)
+  {
+    print(paste("Checking ",symbol))
+    getSymbols(as.character(symbol), src='google', index.class=c("POSIXt","POSIXct"), env=LoadedSymbols, from="2016-01-01")
+  }
+  
+}
 
 #Reload all AIM data and tell Slack
 setwd("/home/raffles/Raffles/Data")

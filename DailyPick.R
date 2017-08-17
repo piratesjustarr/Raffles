@@ -67,23 +67,23 @@ picks<-gsub(names(res),pattern = "\\.",replacement = ":")
 picks<-head(picks,50)
 
 #Sum of return over last 10 days
-dayreturns<-list()
-for(pick in picks)
-{
-  recent<<-last(LoadedSymbols[[pick]],"10 days")
-  recent_cl<-(Cl(recent))
-  #return<-as.numeric(recent_cl[10])/as.numeric(recent_cl[1])*100
-  return<-sum(ROC(recent_cl),na.rm = TRUE)
-  print(pick)
-  print(return)
-  dayreturns[[pick]]<-return
-}
-picks<-t(as.data.frame(dayreturns[order(t(as.data.frame(dayreturns)),decreasing = TRUE)]))
+# dayreturns<-list()
+# for(pick in picks)
+# {
+#   recent<<-last(LoadedSymbols[[pick]],"10 days")
+#   recent_cl<-(Cl(recent))
+#   #return<-as.numeric(recent_cl[10])/as.numeric(recent_cl[1])*100
+#   return<-sum(ROC(recent_cl),na.rm = TRUE)
+#   print(pick)
+#   print(return)
+#   dayreturns[[pick]]<-return
+# }
+# picks<-t(as.data.frame(dayreturns[order(t(as.data.frame(dayreturns)),decreasing = TRUE)]))
 write.csv(picks,"picks.csv")
 picks<-head(picks,5)
 
 slackr_setup()
-slackrBot("Making daily picks from highest median gain in previous 30 days, top 50 sorted by sum of ROC in last 10 days:")
+slackrBot("Making daily picks from highest median gain in previous 30 days")#, top 50 sorted by sum of ROC in last 10 days:")
 slackrBot(print(picks))
 
 #Get names not returns
